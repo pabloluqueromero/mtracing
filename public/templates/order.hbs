@@ -1,0 +1,48 @@
+{{> navbar this}}
+
+{{> header this}}
+
+{{> messages this}}
+<main>
+  <div class="container mb-5">
+    <div class="row justify-content-center">
+      <div class="col-xl-9 col-lg-10 col-12">
+        <h3 class="display-5 title">Order {{this.order.number}}</h3>
+        <div class="my-4">
+          <div class="mr-3"><b>Date:</b> {{formatDate this.order.date}}</div>
+          <div class="mr-3"><b>Address:</b> {{this.order.address}}</div>
+          <div class="mr-3"><b>Card Number:</b> {{this.order.cardNumber}}</div>
+          <div class="mr-3"><b>Card Owner:</b> {{this.order.cardOwner}}</div>
+        </div>
+        <hr>
+        <h3 class="display-5 title">Products</h3>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <th scope="col">Qty</th>
+              <th scope="col">Product</th>
+              <th scope="col">Total</th>
+            </thead>
+            {{#each this.order.items}}
+            <tr>
+              <td>{{this.qty}}</td>
+              <td>{{this.title}}</td>
+              <td>{{formatPrice this.total}}</td>
+            </tr>
+            {{/each}}
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+
+        <div class="my-4">
+          <div class="mr-3"><b>Subtotal:</b> {{formatPrice this.order.subtotal}}</div>
+          <div class="mr-3"><b>Tax:</b> {{formatPrice this.order.tax}}</div>
+          <div class="mr-3"><b>Total:</b> {{formatPrice this.order.total}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{{> footer this}}

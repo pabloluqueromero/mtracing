@@ -1,0 +1,68 @@
+{{> navbar this}}
+
+
+{{> header this}}
+
+{{> messages this}}
+
+<main>
+    <div class="container mb-5">
+        <div class="row">
+
+            {{#each this.products}}
+            <div class="col-xl-3 col-lg-4 col-md-6 col-12">
+
+                <div class="card text-dark mb-3 text-center">
+                    <!--Background color for the card top part-->
+                    <div class="card-header bg-nav"></div>
+                    <img class="card-img-top" src="./images/{{this.image}}" alt="Image not available">
+                    <div class="card-body">
+                        <!--Horizontal line to separate image from card content-->
+                        <hr>
+                        <h4 class="card-title">{{this.title}}</h4>
+                        <div class="card-text ml-3 my-3 text-left">
+                            <p>{{this.description}}</p>
+                            <div class="d-flex justify-content-center">
+                                <div class="p-1 font-weight-bold">Available colours</div>
+                            </div>
+                            <div class="d-flex justify-content-center mb-3">
+                                {{#each this.colours}}
+                                <div class="p-1 "><span class="circle {{this}}"></span></div>
+                                {{/each}}
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <h5 class="font-weight-bold">{{formatPrice this.price}}</h5>
+                                <a href="/index" onclick="buy_clicked('{{this._id}}','{{this.title}}',event)"
+                                    class="btn btn-primary font-weight-bold px-4 ml-2 {{#unless ../user}}disabled{{/unless}}">Buy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+    </div>
+
+</main>
+{{> footer this}}
+
+
+<script type="application/javascript">
+    function buy_clicked(id, title, event) {
+        event.preventDefault();
+        Model.buy(id)
+            .done(function () {
+                Messages.success.push(`Product ${title} added to the cart`);
+                navigateTo(event.target.href, event);
+            })
+            .fail(function (error) {
+                console.error('buy error',
+                    error.status,
+                    error.statusText,
+                    error.responseJSON.message);
+            });
+    }
+</script>

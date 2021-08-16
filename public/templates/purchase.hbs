@@ -1,0 +1,100 @@
+{{> navbar this}}
+
+{{> header this}}
+
+{{> messages this}}
+<main>
+  <div class="container mb-5">
+    <div class="row justify-content-center">
+      <div class="col-xl-9 col-lg-10 col-12">
+        <h3 class="display-5 font-weight-boldz">Purchase</h3>
+        {{#if this.user.shoppingCart.items}}
+        <form id="purchase-form" class="needs-validation" novalidation>
+          <div class=" form-group">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date" required="true">
+            <div class="invalid-feedback">The date cannot be empty</div>
+          </div>
+          <div class=" form-group">
+            <label for="address">Address</label>
+            <input class="form-control" id="address" placeholder="Address" required="true">
+            <div class="invalid-feedback">The address cannot be empty</div>
+          </div>
+          <div class=" form-group">
+            <label for="cardnumber">Card number</label>
+            <input class="form-control" id="cardNumber" placeholder="Card Number" required="true" pattern="[0-9]{16}">
+            <div class="invalid-feedback">The card number must have between 16 numbers </div>
+          </div>
+          <div class=" form-group">
+            <label for="cardowner">Card Owner</label>
+            <input class="form-control" id="cardOwner" placeholder="Card Owner" required="true">
+            <div class="invalid-feedback">The card owner cannot be empty</div>
+          </div>
+          <h3 class="display-5">Items</h3>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <th scope="col">Qty</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Total</th>
+              </thead>
+              {{#each this.user.shoppingCart.items}}
+              <tr>
+                <td>{{this.qty}}</td>
+                <td>{{this.title}}</td>
+                <td>{{formatPrice this.total}}</td>
+              </tr>
+              {{/each}}
+              <tbody>
+
+              </tbody>
+            </table>
+
+          </div>
+          <div class="my-4">
+            <div class="mr-3"><b>Subtotal:</b> {{formatPrice this.user.shoppingCart.subtotal}}</div>
+            <div class="mr-3"><b>Tax:</b> {{formatPrice this.user.shoppingCart.tax}}</div>
+            <div class="mr-3"><b>Total:</b> {{formatPrice this.user.shoppingCart.total}}</div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <a href="#" class="btn btn-primary px-2 mb-3" onclick="purchase_clicked(event)">Checkout</a>
+          </div>
+        </form>
+
+        {{else}}
+        <div class="d-flex justify-content-center mt-5">
+          <h4>No product items in the shopping cart yet</h4>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</main>
+{{> footer this}}
+
+<script type="application/javascript">
+  $(document).ready(() => {
+    var today = new Date();
+    $('#date').val(today.toISOString().substr(0, 10));
+  });
+
+  function purchase_clicked(event) {
+    event.preventDefault();
+    var form = document.getElementById('purchase-form');
+    form.classList.add('was-validated');
+    if (form.checkValidity()) {
+      return Model.purchase(new Date($('#date').val()), $('#address').val(), $('#cardOwner').val(), $('#cardNumber').val())
+        .done((order) => {
+          Messages.success.push("We have successfully completed your order.")
+          navigateTo('/order/id/' + order.number, event);
+        })
+        .fail(function (error) {
+          Messages.danger.push('Something went wrong: ' + error.responseJSON.message);
+          navigateTo('/purchase', event);
+        });
+    } else {
+      console.log('invalid');
+    }
+  }
+
+</script>

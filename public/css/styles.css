@@ -1,0 +1,64 @@
+.bgheader {
+    background-image: url("../images/header-background2-blur.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.bg-nav{
+    background-color: rgb(86, 40, 40);
+}
+
+.card{
+    border:1px  solid rgba(98, 97, 97, 0.445);
+}
+
+.index{
+    background-color: #5353531c;
+}
+
+.navbar-brand{
+    font-family: "Comic Sans MS";
+}
+
+.btn-cart{
+    border: 2px solid rgb(86, 40, 40);
+    color:  rgba(86, 40, 40);
+}
+.btn-cart:hover{
+    background-color: rgba(86, 40, 40, 0.652);
+}
+
+.btn-cart:focus{
+    background-color: rgba(86, 40, 40);
+    color: white;
+}
+
+.btn:focus,.btn:active {
+    outline: rgba(86, 40, 40) !important;
+    box-shadow: none
+ }
+
+ .circle {
+    height: 15px;
+    width: 15px;
+    border: solid rgb(64, 60, 60) 1px;
+    border-radius: 50%;
+    display: block;
+}
+
+.white {
+    background-color: white;
+}
+
+.black {
+    background-color: black;
+}
+
+.red {
+    background-color: rgb(133, 22, 22);
+}
+.orange {
+    background-color: rgb(238, 101, 9);
+}

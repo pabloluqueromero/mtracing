@@ -1,0 +1,112 @@
+{{> navbar this}}
+
+{{> header this}}
+
+{{> messages this}}
+<main>
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-lg-10 col-12">
+                <h3 class="display-5">Shopping Cart</h3>
+                {{#if this.user.shoppingCart.items}}
+                <div class="d-flex justify-content-end">
+                    <div class="mr-3"><b>Total</b> {{formatPrice this.user.shoppingCart.total}}</div>
+                </div>
+
+
+                <h3 class="display-5">Items</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="col"></th>
+                        </thead>
+                        <tbody>
+
+                            {{#each this.user.shoppingCart.items}}
+                            <tr>
+                                <td>{{this.qty}}</td>
+                                <td>{{this.title}}</td>
+                                <td>{{formatPrice this.price}}</td>
+                                <td>{{formatPrice this.total}}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle btn-cart" type="button"
+                                            id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            Remove
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <a class="dropdown-item" href="/cart"
+                                                onclick="delete_one('{{this.product}}','{{this.title}}',event)">One</a>
+                                            <a class="dropdown-item" href="/cart"
+                                                onclick="delete_all('{{this.product}}','{{this.title}}',event)">All</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {{/each}}
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="my-4">
+                    <div class="mr-3"><b>Subtotal:</b> {{formatPrice this.user.shoppingCart.subtotal}}</div>
+                    <div class="mr-3"><b>Tax:</b> {{formatPrice this.user.shoppingCart.tax}}</div>
+                    <div class="mr-3"><b>Total:</b> {{formatPrice this.user.shoppingCart.total}}</div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-primary px-2" href="/purchase"
+                        onclick="navigateTo(event.target.href,event)">Purchase</a>
+                </div>
+
+                {{else}}
+                <div class="d-flex justify-content-center mt-5">
+                    <h4>No product items in the shopping cart yet</h4>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</main>
+{{> footer this}}
+
+<script type="application/javascript">
+    function delete_one(id, title, event) {
+        event.preventDefault();
+
+        Model.removeOne(id)
+            .done(function () {
+                Messages.success.push(`One unit of product ${title} removed!`);
+            })
+            .fail(function (error) {
+                Messages.danger.push('Could not remove the item');
+            })
+            .always(function(){
+                navigateTo(event.target.href, event);
+            });
+        
+        return;
+    }
+    function delete_all(id, title, event) {
+        event.preventDefault();
+
+        Model.removeAll(id)
+            .done(function () {
+                Messages.success.push(`Product ${title} removed!`);
+            })
+            .fail(function (error) {
+                Messages.danger.push('Could not remove the item');
+            })
+            .always(function(){
+                navigateTo(event.target.href, event);
+            });
+        return;
+    }
+</script>

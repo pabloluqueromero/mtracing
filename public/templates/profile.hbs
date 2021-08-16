@@ -1,0 +1,53 @@
+{{> navbar this}}
+
+{{> header this}}
+
+{{> messages this}}
+<main>
+  <div class="container mb-5">
+    <div class="row justify-content-center">
+      <div class="col-xl-9 col-lg-10 col-12">
+        <div class="d-flex">
+          <h3 class="display-5 title">Profile</h1>
+        </div>
+        <div class="my-4">
+          <div class="mr-3"><b>Name:</b> {{this.user.name}}</div>
+          <div class="mr-3"><b>Surname:</b> {{this.user.surname}}</div>
+          <div class="mr-3"><b>Birth:</b> {{formatDate this.user.birthDate}}</div>
+          <div class="mr-3"><b>Address:</b> {{this.user.address}}</div>
+          <div class="mr-3"><b>Email:</b> {{this.user.email}}</div>
+        </div>
+        <hr>
+        <h3 class="display-5 title">Order List</h3>
+        {{#if this.user.orders}}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <th scope="col">Date</th>
+              <th scope="col">Number</th>
+              <th scope="col">Total</th>
+              <th scope="col"></th>
+            </thead>
+            {{#each this.user.orders}}
+            <tr>
+              <td>{{formatDate this.date}}</td>
+              <td>{{this.number}}</td>
+              <td>{{formatPrice this.total}}</td>
+              <td><a href="/order/id/{{this.number}}" onclick="navigateTo(event.target.href,event)"class="btn btn-primary">Details</a></td>
+            </tr>
+            {{/each}}
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+        {{else}}
+        <div class="d-flex justify-content-center mt-5">
+          <h4>No orders yet!</h4>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</main>
+{{> footer this}}
